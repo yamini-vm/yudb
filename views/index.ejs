@@ -1,0 +1,15 @@
+<%- include('includes/header.ejs') %>
+
+    <label for="prog_type"><strong>Path to ASM file:</strong></label>
+    <br>
+    <p>
+
+    </p>
+        <input type="text" id="path" class="input" placeholder="Enter path to ASM file" required>
+    <p>
+        <input type="button" id="debug-btn" class="button" value="Debug">
+    </p>
+
+    <%- include('./includes/js-includes.ejs', {jsFile: jsFile}) %>
+</body>
+</html>
