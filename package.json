@@ -1,0 +1,36 @@
+{
+  "name": "yudb",
+  "version": "1.0.0",
+  "description": "YamASM user level code debugger",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamini-vm/yudb.git"
+  },
+  "keywords": [
+    "Debugger",
+    "Yamini",
+    "Virtual",
+    "Machine",
+    "Assembler",
+    "Node.js"
+  ],
+  "author": "Siddhartha Dhar Choudhury",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yamini-vm/yudb/issues"
+  },
+  "homepage": "https://github.com/yamini-vm/yudb#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  }
+}
