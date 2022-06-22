@@ -1,27 +1,84 @@
 .button {
-    border: 2px solid black;
+    border: 3px solid #097969;
     border-radius: 10px;
     background: none;
-    color: black;
+    color: #097969;
     font-weight: bold;
     padding: 10px 20px;
 }
 
 .button:hover {
-    background: black;
+    background: #097969;
     color: white;
 }
 
 .input {
-    border: 2px solid black;
+    border: 3px solid #097969;
     border-radius: 10px;
     background: none;
-    color: black;
     padding: 10px;
     width: 25%;
     outline: 0;
 }
 
-h1 {
+body {
+    margin: 0;
+}
+
+#navbar {
+    height: 60px;
+    width: 100%;
+    margin: 0;
+    background-color: #097969;
+    border-bottom: 2px solid #097969;
+    margin-bottom: 10px;
+}
+
+.nav-button {
+    height: 60px;
+    float: left;
+    background: white;
+    font-weight: bold;
+    border: none;
+    color: #097969;
+    text-transform: uppercase;
+    padding: 0px 20px 0px 20px;
+}
+
+.nav-button:hover {
+    background-color: #097969;
+    color: white;
+    border: 2px solid white;
+}
+
+#title {
     text-align: center;
+    /* margin: 0 auto; */
+    line-height: 20px;
+    color: white;
+    text-transform: uppercase;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+#container {
+    margin: 10px;
+}
+
+.half-div {
+    width: 49%;
+    height: 88vh;
+    border: 2px solid black;
+    overflow-y: auto;
+}
+
+#code {
+    float: left;
+    margin-left: 10px;
+}
+
+#debug {
+    float: right;
+    margin-right: 10px;
 }

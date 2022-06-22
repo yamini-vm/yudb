@@ -4,3 +4,10 @@ exports.getIndex = (req, res, next) => {
        jsFile: "index.js",
     });
 };
+
+exports.getDebug = (req, res, next) => {
+    res.render('debug', { 
+       docTitle: 'Debug Mode',
+       jsFile: "debug.js",
+    });
+};
