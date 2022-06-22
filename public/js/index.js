@@ -1,14 +1,11 @@
 $(document).ready(function() {
 
-    $("#some-button").click(function() {
-        $.ajax({
-            url: "/some-url",
-            type: "some-type",
-            data: {"some-key": "some-value"},
-            success: function(result) {
-                // Some processing
-            }
-        });
+    $("#debug-btn").click(() => {
+        const data = {
+            "path": ["empty"],
+        };
+
+        validate_and_post("/debug", data, swal_ajax_post_redirect);
     });
 
 });

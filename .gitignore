@@ -1,4 +1,7 @@
 .DS_Store
-a.out
 package-lock.json
 node_modules/
+debug/
+a.out
+*.yas
+tmp
