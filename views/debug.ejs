@@ -1,9 +1,60 @@
 <%- include('includes/header.ejs') %>
 
     <div id="code" class="half-div"></div>
-    <div id="debug" class="half-div"></div>
+    <div id="debug" class="half-div">
+        <div class="box">
+            <label for="pc">PC:</label>
+
+            <table>
+                <tr>
+                    <th id="pc"></th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="box">
+            <label for="pc">Register:</label>
+
+            <table>
+                <tr>
+                    <th id="R0"></th>
+                    <th id="R1"></th>
+                    <th id="R2"></th>
+                    <th id="R3"></th>
+                    <th id="R4"></th>
+                    <th id="R5"></th>
+                    <th id="R6"></th>
+                    <th id="R7"></th>
+                    <th id="R8"></th>
+                    <th id="R9"></th>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+        <div style="display: table;">
+            <div class="box stack-box">
+                <br>
+                <label for="data-stack">Data Stack:</label>
+                <div id="data-stack"></div>
+            </div>
+
+            <div class="box stack-box">
+                <br>
+                <label for="call-stack">Call Stack:</label>
+                <div id="call-stack"></div>
+            </div>
+        </div>
+        
+        <div class="box" style="width: 120%">
+            <br>
+            <label for="memory">Memory</label>
+            <div id="memory"></div>
+        </div>
+    </div>
 
     <script type="text/javascript" src="/js/stack.js"></script>
     <%- include('./includes/js-includes.ejs', {jsFile: jsFile}) %>
-</body>
-</html>
+        </body>
+
+        </html>
