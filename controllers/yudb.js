@@ -2,6 +2,8 @@ const fs = require("fs");
 const { execSync } = require("child_process");
 
 let OUTPUT = null;
+let DEBUG_INFO = null;
+let PTR = 0;
 
 exports.getIndex = (req, res, next) => {
     res.render('index', { 
@@ -66,7 +68,7 @@ exports.postDebug = (req, res, next) => {
 
     let command = `yamasm ${file_path} -o tmp`;
     execSync(command);
-    command = "yamini tmp";
+    command = "yamini tmp -d";
     OUTPUT = execSync(command).toString();
 
     return res.send(JSON.stringify({
@@ -78,10 +80,55 @@ exports.postDebug = (req, res, next) => {
 };
 
 exports.getDebug = (req, res, next) => {
-    console.log(OUTPUT);
-
     res.render('debug', { 
        docTitle: 'Debug Mode',
        jsFile: "debug.js",
     });
 };
+
+readDebuggingInfo = () => {
+    try {
+        const debugInfo = fs.readFileSync("debug/debugging.json", "utf8");
+        return JSON.parse(debugInfo);
+    } catch (err) {
+        return {
+            "icon": "error",
+            "title": "Error",
+            "text": err,
+        };
+    }
+}
+
+exports.postRunDebug = (req, res, next) => {
+    const result = readDebuggingInfo();
+
+    if (res.icon == "error") {
+        return res.send(JSON.stringify(result));
+    }
+
+    DEBUG_INFO = result;
+    let currentDebuggingDict = DEBUG_INFO[PTR];
+
+    let code = "<pre>";
+
+    let i = 0;
+    for (debugDict of DEBUG_INFO) {
+        if (i == currentDebuggingDict.b_pc) {
+            code += "<span style='background-color: black; color: white'>" + debugDict.instruction + "</span><br>";
+        } else {
+            code += debugDict.instruction + "<br>";
+        }
+        i++;
+    }
+
+    code += "</pre>";
+
+    PTR += 1;
+
+    return res.send(JSON.stringify({
+        icon: "success",
+        title: "Success",
+        text: "Loaded debugging information!",
+        code: code,
+    }));
+}

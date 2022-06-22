@@ -10,4 +10,6 @@ router.post('/debug', yudbController.postDebug);
 
 router.get('/debug', yudbController.getDebug);
 
+router.post('/run-debug', yudbController.postRunDebug);
+
 module.exports = router;
