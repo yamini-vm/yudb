@@ -1,57 +1,51 @@
 class Stack {
-    constructor(stack_id, stack_size = 10, entry_width = 40) {
+    constructor(stack_id, stack_size = 10) {
         this.stack_elem = document.getElementById(stack_id);
         this.stack_size = stack_size;
 
-        this.stack_css = `
-            width: 150px;
-            height: ${this.stack_size * entry_width + 20}px;
-            border-width: 0px 2px 2px 2px;
-            border-color: black;
-            border-style: solid;
-        `;
-        this.stack_entry_css = `
-            width: 150px;
-            height: ${entry_width}px;
-            border-width: 2px 0px 0px 0px;
-            border-style: solid;
-            border-color: black;
-            text-align: center;
-            line-height: ${entry_width}px;
-        `;
-
-        this.stack_elem.style.cssText = this.stack_css;
-
         this.stack = [];
-        this.#render_stack();
-    }
+        this.#renderStack();
+    };
 
-    #render_stack = () => {
-        let stack_html = '';
-        let count = 0;
+    #insertRow = (tbl, textData) => {
+        const tr = tbl.insertRow();
+        const td = tr.insertCell();
+        const text = document.createTextNode(textData);
+
+        td.appendChild(text);
+        td.style.border = '2px solid black';
+        td.style.borderCollapse = 'collapse';
+        td.style.height = '20px';
+        td.style.padding = '5px 10px';
+
+        tbl.appendChild(tr);
+    };
+
+    #renderStack = () => {
+        this.stack_elem.innerHTML = "";
+
+        let tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        tbl.style.border = '1px solid black';
+        tbl.style.borderCollapse = 'collapse';
+        tbl.style.textAlign = 'center';
+
         for (let i = 0; i < this.stack_size - this.stack.length; i++) {
-            stack_html += '<div class="stack-entry"></div>';
-            count++;
+            this.#insertRow(tbl, '');
         }
 
         for (let i = this.stack.length - 1; i >= 0; i--) {
-            stack_html += `<div class="stack-entry">${this.stack[i]}</div>`;
-            count++;
+            this.#insertRow(tbl, this.stack[i]);
         }
 
-        this.stack_elem.innerHTML = stack_html;
-
-        const STACK_ENTRY_ELEM = document.getElementsByClassName('stack-entry');
-        for (const val of STACK_ENTRY_ELEM) {
-            val.style.cssText = this.stack_entry_css;
-        }
+        this.stack_elem.appendChild(tbl);
     };
 
     push = (value) => {
         if (value.length > 0) {
             if (this.stack.length < this.stack_size) {
                 this.stack.push(value);
-                this.#render_stack();
+                this.#renderStack();
             } else {
                 alert("Stack is full!");
             }
@@ -63,7 +57,7 @@ class Stack {
     pop = () => {
         if (this.stack.length > 0) {
             this.stack.pop();
-            this.#render_stack();
+            this.#renderStack();
         } else {
             alert('The stack is empty!');
         }
