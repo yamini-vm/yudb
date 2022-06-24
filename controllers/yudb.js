@@ -113,7 +113,7 @@ exports.postRunDebug = (req, res, next) => {
 
     let i = 0;
     for (debugDict of DEBUG_INFO) {
-        if (i == currentDebuggingDict.b_pc) {
+        if (i == currentDebuggingDict.pc) {
             code += "<span style='background-color: black; color: white'>" + debugDict.instruction + "</span><br>";
         } else {
             code += debugDict.instruction + "<br>";
@@ -130,5 +130,7 @@ exports.postRunDebug = (req, res, next) => {
         title: "Success",
         text: "Loaded debugging information!",
         code: code,
+        pc: currentDebuggingDict.pc,
+        register: currentDebuggingDict.b_registers,
     }));
 }

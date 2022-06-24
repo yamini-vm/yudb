@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 text: result.text,
             }).then(function() {
                 $("#code").html(result.code);
+                $("#pc").html(result.pc);
+
+                let i = 0;
+                $("#register").find('th').each((column, th) => {
+                    $(th).html(result.register[i]);
+                    i++;
+                });
             });
         },
     });
