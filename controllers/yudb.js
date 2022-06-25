@@ -1,8 +1,10 @@
 const fs = require("fs");
 const { execSync } = require("child_process");
+const { FILE } = require("dns");
 
 let OUTPUT = null;
 let DEBUG_INFO = null;
+let CODE_LINES = null;
 let PTR = -1;
 
 exports.getIndex = (req, res, next) => {
@@ -62,7 +64,7 @@ let perform_file_checks = (file_path) => {
 exports.postDebug = (req, res, next) => {
     const file_path = req.body.path;
 
-    const result = perform_file_checks(file_path);
+    let result = perform_file_checks(file_path);
     if (result['icon'] == 'error') {
         return result;
     }
@@ -88,9 +90,9 @@ exports.getDebug = (req, res, next) => {
     });
 };
 
-readDebuggingInfo = () => {
+readJSONFile = (path) => {
     try {
-        const debugInfo = fs.readFileSync("debug/debugging.json", "utf8");
+        const debugInfo = fs.readFileSync(path, "utf8");
         return JSON.parse(debugInfo);
     } catch (err) {
         return {
@@ -102,14 +104,20 @@ readDebuggingInfo = () => {
 }
 
 const moveDebugPtr = (isReset=false) => {
-    const result = readDebuggingInfo();
-
-    if (result.icon == "error") {
-        return result;
+    if (DEBUG_INFO == null) {
+        const result = readJSONFile("debug/debugging.json");
+        if (result.icon == "error") {
+            return result;
+        }
+        DEBUG_INFO = result;
     }
 
-    if (DEBUG_INFO == null) {
-        DEBUG_INFO = result;
+    if (CODE_LINES == null) {
+        const result = readJSONFile("debug/code_lines.json");
+        if (result.icon == "error") {
+            return result;
+        }
+        CODE_LINES = result;
     }
 
     if (isReset) {
@@ -131,11 +139,11 @@ const moveDebugPtr = (isReset=false) => {
     let code = "<pre>";
 
     let i = 0;
-    for (debugDict of DEBUG_INFO) {
+    for (line of CODE_LINES) {
         if (i == currentDebuggingDict.pc) {
-            code += "<span style='background-color: black; color: white'>" + debugDict.instruction + "</span><br>";
+            code += "<span style='background-color: black; color: white'>" + line + "</span><br>";
         } else {
-            code += debugDict.instruction + "<br>";
+            code += line + "<br>";
         }
         i++;
     }
