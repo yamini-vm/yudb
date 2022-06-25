@@ -3,12 +3,13 @@ const { execSync } = require("child_process");
 
 let OUTPUT = null;
 let DEBUG_INFO = null;
-let PTR = 0;
+let PTR = -1;
 
 exports.getIndex = (req, res, next) => {
     res.render('index', { 
        docTitle: 'Path to ASM file',
        jsFile: "index.js",
+       isDebuggingMode: false,
     });
 };
 
@@ -83,6 +84,7 @@ exports.getDebug = (req, res, next) => {
     res.render('debug', { 
        docTitle: 'Debug Mode',
        jsFile: "debug.js",
+       isDebuggingMode: true,
     });
 };
 
@@ -94,19 +96,36 @@ readDebuggingInfo = () => {
         return {
             "icon": "error",
             "title": "Error",
-            "text": err,
+            "text": err.message,
         };
     }
 }
 
-exports.postRunDebug = (req, res, next) => {
+const moveDebugPtr = (isReset=false) => {
     const result = readDebuggingInfo();
 
-    if (res.icon == "error") {
-        return res.send(JSON.stringify(result));
+    if (result.icon == "error") {
+        return result;
     }
 
-    DEBUG_INFO = result;
+    if (DEBUG_INFO == null) {
+        DEBUG_INFO = result;
+    }
+
+    if (isReset) {
+        PTR = -1;
+    }
+
+    PTR++;
+
+    if (PTR >= DEBUG_INFO.length) {
+        return {
+            "icon": "error",
+            "title": "Error",
+            "text": "Reset to start again!"
+        };
+    }
+
     let currentDebuggingDict = DEBUG_INFO[PTR];
 
     let code = "<pre>";
@@ -123,14 +142,23 @@ exports.postRunDebug = (req, res, next) => {
 
     code += "</pre>";
 
-    PTR += 1;
-
-    return res.send(JSON.stringify({
+    return {
         icon: "success",
         title: "Success",
         text: "Loaded debugging information!",
         code: code,
         pc: currentDebuggingDict.pc,
-        register: currentDebuggingDict.b_registers,
-    }));
+        register: currentDebuggingDict.a_registers,
+        flagRegister: currentDebuggingDict.a_flag_register,
+        stack: currentDebuggingDict.stack,
+        callStack: currentDebuggingDict.call_stack,
+    };
+}
+
+exports.postNextDebug = (req, res, next) => {
+    return res.send(JSON.stringify(moveDebugPtr()));
+}
+
+exports.postResetDebug = (req, res, next) => {
+    return res.send(JSON.stringify(moveDebugPtr(true)));
 }

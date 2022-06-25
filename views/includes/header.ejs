@@ -12,4 +12,9 @@
     <nav id="navbar">
         <input type="button" onclick="window.location.href = '/';" class="nav-button" value="Path to ASM file">
         <h1 id="title"><%= docTitle %></h1>
+
+        <% if (isDebuggingMode) { %>
+            <input type="button" id="reset-debug" class="right-nav-button" value="Reset">
+            <input type="button" id="next-debug" class="right-nav-button" value="Next">
+        <% } %>
     </nav>

@@ -12,8 +12,7 @@
             </div>
 
             <div class="box">
-                <label for="pc">Register:</label>
-
+                <label for="register">Register:</label>
                 <table>
                     <tr id="register">
                         <th></th>
@@ -30,8 +29,35 @@
                 </table>
             </div>
 
-            <br>
-            <div style="display: table;">
+            <div style="display: table; float: left;">
+                <div class="box register-box">
+                    <label for="flag-register">Flag Register:</label>
+                    <table>
+                        <tr>
+                            <th>Z</th>
+                            <th>N</th>
+                            <th>X</th>
+                            <th>X</th>
+                            <th>X</th>
+                            <th>X</th>
+                            <th>X</th>
+                            <th>X</th>
+                        </tr>
+                        <tr id="flag-register">
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: table; float: left;">
                 <div class="box stack-box">
                     <br>
                     <label for="data-stack">Data Stack:</label>
@@ -45,8 +71,7 @@
                 </div>
             </div>
             
-            <div class="box" style="width: 120%">
-                <br>
+            <div class="box" style="width: 120%;">
                 <label for="memory">Memory</label>
                 <div id="memory"></div>
             </div>
