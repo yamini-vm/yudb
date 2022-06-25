@@ -62,4 +62,11 @@ class Stack {
             alert('The stack is empty!');
         }
     };
+
+    reset = () => {
+        this.stack_elem.innerHTML = 0;
+
+        this.stack = [];
+        this.#renderStack();
+    }
 }

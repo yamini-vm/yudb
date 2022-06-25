@@ -71,5 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("#reset-debug").click(() => {
         moveDebugPtr("reset");
+
+        dataStack.reset();
+        callStack.reset();
     })
 });
