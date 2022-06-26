@@ -58,6 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     for (instruction of callStackInstructions) {
                         executeStackInstructions(callStack, instruction);
                     }
+
+                    let memory_data = "<ul>";
+                    console.log(result.memory);
+                    for (const [key, value] of Object.entries(result.memory)) {
+                        memory_data += "<li>" + key + ": " + value + "</li>";
+                    }
+                    memory_data += "</ul>";
+                    $("#memory").html(memory_data);
                 }
             },
         });

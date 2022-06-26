@@ -5,6 +5,7 @@ const { FILE } = require("dns");
 let OUTPUT = null;
 let DEBUG_INFO = null;
 let CODE_LINES = null;
+let ASM_CODE_LINES = null;
 let PTR = -1;
 
 exports.getIndex = (req, res, next) => {
@@ -61,12 +62,37 @@ let perform_file_checks = (file_path) => {
     }
 }
 
+let read_file = (file_path) => {
+    try {
+        const data = fs.readFileSync(file_path, 'utf8');
+        return {
+           "icon": "success",
+           "data": data, 
+        };
+    } catch (err) {
+        return {
+            "icon": "error",
+            "title": "Error",
+            "text": err,
+        };
+    }
+};
+
 exports.postDebug = (req, res, next) => {
     const file_path = req.body.path;
 
     let result = perform_file_checks(file_path);
     if (result['icon'] == 'error') {
         return result;
+    }
+
+    result = read_file(file_path);
+    if (result['icon'] == 'error') {
+        return result;
+    } else {
+        const file_contents = result.data.split('\n');
+
+        fs.writeFileSync("debug/asm_code_lines.json", JSON.stringify(file_contents, null, 4));
     }
 
     let command = `yamasm ${file_path} -o tmp`;
@@ -120,6 +146,14 @@ const moveDebugPtr = (isReset=false) => {
         CODE_LINES = result;
     }
 
+    if (ASM_CODE_LINES == null) {
+        const result = readJSONFile("debug/asm_code_lines.json");
+        if (result.icon == "error") {
+            return result;
+        }
+        ASM_CODE_LINES = result;
+    }
+
     if (isReset) {
         PTR = -1;
     }
@@ -141,9 +175,9 @@ const moveDebugPtr = (isReset=false) => {
     let i = 0;
     for (line of CODE_LINES) {
         if (i == currentDebuggingDict.pc) {
-            code += "<span style='background-color: black; color: white'>" + line + "</span><br>";
+            code += (i+1) + " - <span style='background-color: black; color: white'>" + line + " (" + ASM_CODE_LINES[i] + ")</span><br>";
         } else {
-            code += line + "<br>";
+            code += (i+1) + " - " + line + " (" + ASM_CODE_LINES[i] + ")<br>";
         }
         i++;
     }
@@ -160,6 +194,7 @@ const moveDebugPtr = (isReset=false) => {
         flagRegister: currentDebuggingDict.a_flag_register,
         stack: currentDebuggingDict.stack,
         callStack: currentDebuggingDict.call_stack,
+        memory: currentDebuggingDict.a_data_memory,
     };
 }
 
